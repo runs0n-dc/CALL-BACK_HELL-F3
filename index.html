@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Callback Hell Project</title>
+  </head>
+  <body>
+    <h1>Check out the Console to check the scores</h1>
+    <script>
+        function OpeningCeremony(){
+            setTimeout(() => {
+                console.log("Let the games begin")
+                const score={
+                    red: 0,
+                    blue: 0,
+                    green: 0,
+                    yellow: 0
+                };
+                Race100M(score, LongJump)
+            }, 1000);
+        }
+
+        function Race100M(score, LongJump){
+            console.log("score ",score);
+            setTimeout(() => {
+                let raceTime={
+                    red: Math.floor(Math.random()*6+10),
+                    blue: Math.floor(Math.random()*6+10),
+                    green: Math.floor(Math.random()*6+10),
+                    yellow: Math.floor(Math.random()*6+10)
+                };
+                const sorted= Object.keys(raceTime).sort((a,b) => raceTime[a]-raceTime[b]);
+                console.log("100M race winner is ",sorted[0]);
+                score[sorted[0]]+=50;
+                score[sorted[1]]+=25;
+                console.log("Updated Score",score);
+                LongJump(score, HighJump);
+            }, 3000);
+        }
+
+        function LongJump(score, HighJump){
+            setTimeout(() => {
+                const keys=Object.keys(score);
+                const highJumper=keys[Math.floor(Math.random()*keys.length)]
+                console.log("High jump winner is ",highJumper);
+                score[highJumper]+=150;
+                console.log("Updated Score",score);
+                HighJump(score, AwardCeremony)
+            }, 2000);
+        }
+
+        function HighJump(score, AwardCeremony){
+            let colour=prompt("What colour secured the highest jump")
+            if(score[colour] == undefined){
+                console.log("Event was cancelled");
+            }
+            else{
+                console.log("Long jump winner is ",colour);
+                score[colour]+=100
+            }
+            console.log("Final Score",score);
+            AwardCeremony(score)
+        }
+
+        function AwardCeremony(score){
+            const ranks=Object.keys(score).sort((a,b) => score[b]-score[a])
+            console.log(`${ranks[0]} came first with ${score[ranks[0]]} points.`);
+            console.log(`${ranks[1]} came second with ${score[ranks[1]]} points.`);
+            console.log(`${ranks[2]} came third with ${score[ranks[2]]} points.`);
+            console.log(`${ranks[3]} came last with ${score[ranks[3]]} points.`);
+        }
+        OpeningCeremony();
+    </script>
+  </body>
+</html>
